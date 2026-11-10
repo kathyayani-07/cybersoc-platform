@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
+
 export default function LoginPage() {
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('Admin123!');
+  const [password, setPassword] = useState('');
   const location = useLocation();
   const [message, setMessage] = useState(location.state?.message || '');
   const { setToken, setUser } = useAuth();
@@ -16,8 +18,6 @@ export default function LoginPage() {
     setMessage('');
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL;
-
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,4 +69,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
