@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -12,20 +13,32 @@ export default function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setMessage(data.detail || 'Login failed');
-      return;
+    setMessage('');
+
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.detail || 'Login failed');
+        return;
+      }
+
+      setToken(data.access_token);
+      setUser(data.user);
+      navigate('/');
+    } catch (error) {
+      setMessage('Cannot connect to the server. Please try again.');
+      console.error('Login error:', error);
     }
-    setToken(data.access_token);
-    setUser(data.user);
-    navigate('/');
   };
 
   return (
@@ -40,7 +53,11 @@ export default function LoginPage() {
           </label>
           <label>
             Password
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </label>
           {message && <div className="error-box">{message}</div>}
           <button type="submit" className="primary-button">Login</button>
@@ -52,3 +69,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

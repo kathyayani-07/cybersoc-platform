@@ -1,7 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 const AuthContext = createContext(null);
-
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const apiUrl = (path) => `${API_URL}${path}`;
 function storedUser() {
   try {
     return JSON.parse(localStorage.getItem('cyber_user') || 'null');
@@ -46,7 +47,7 @@ export function AuthProvider({ children }) {
       refreshPromise.current = (async () => {
         const headers = new Headers();
         if (currentToken) headers.set('Authorization', `Bearer ${currentToken}`);
-        const response = await fetch('/api/auth/refresh', {
+        const response = await fetch(apiUrl('/api/auth/refresh'), {
           method: 'POST',
           headers,
           credentials: 'include',
@@ -83,7 +84,7 @@ export function AuthProvider({ children }) {
     const send = (accessToken) => {
       const headers = new Headers(init.headers);
       if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
-      return fetch(input, { ...init, headers, credentials: 'include' });
+      return fetch(apiUrl(input), { ...init, headers, credentials: 'include' });
     };
     const response = await send(token || localStorage.getItem('cyber_token') || '');
     if (response.status !== 401) return response;
@@ -101,7 +102,7 @@ export function AuthProvider({ children }) {
     const headers = new Headers();
     if (token) headers.set('Authorization', `Bearer ${token}`);
     try {
-      await fetch('/api/auth/logout', { method: 'POST', headers, credentials: 'include' });
+      await fetch(apiUrl('/api/auth/logout'), { method: 'POST', headers, credentials: 'include' });
     } finally {
       clearSession();
     }
