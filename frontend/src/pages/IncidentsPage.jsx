@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { formatDateTimeIST } from '../utils/dateTime';
 
 const PAGE_SIZE = 10;
-
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
 export default function IncidentsPage() {
   const { token } = useAuth();
   const location = useLocation();
@@ -31,7 +31,7 @@ export default function IncidentsPage() {
       if (query) params.set('query', query);
       if (severity) params.set('severity', severity);
       if (status) params.set('status', status);
-      const response = await fetch(`/api/incidents?${params.toString()}`, {
+      const response = await fetch(`${API_URL}/api/incidents?${params.toString()}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

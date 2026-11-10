@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 const AuthContext = createContext(null);
-const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
 const apiUrl = (path) => `${API_URL}${path}`;
 function storedUser() {
   try {

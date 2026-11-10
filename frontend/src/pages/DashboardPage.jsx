@@ -15,7 +15,7 @@ import {
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { formatDateTimeIST } from '../utils/dateTime';
-
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
 const severityColors = {
   Critical: '#ef4444',
   High: '#fb7185',
@@ -29,7 +29,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('/api/dashboard/overview', {
+      const response = await fetch(`${API_URL}/api/dashboard/overview`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
 const initialState = {
   title: '',
   description: '',
@@ -36,7 +36,7 @@ export default function CreateIncidentPage() {
     setSubmitting(true);
 
     try {
-      const response = await fetch('/api/incidents', {
+      const response = await fetch(`${API_URL}/api/incidents`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { formatDateTimeIST } from '../utils/dateTime';
-
+const API_URL = (import.meta.env.VITE_API_URL || 'https://cybersoc-platform-j4h1.onrender.com').replace(/\/$/, '');
 function CountCards({ title, counts }) {
   return (
     <section>
@@ -30,7 +30,7 @@ export default function ReportsPage() {
       setLoading(true);
       setError('');
       try {
-        const response = await fetch('/api/reports', {
+        const response = await fetch(`${API_URL}/api/reports`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
@@ -52,7 +52,7 @@ export default function ReportsPage() {
     setExporting(true);
     setError('');
     try {
-      const response = await fetch('/api/incidents/export/csv', {
+      const response = await fetch(`${API_URL}/api/incidents/export/csv`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
