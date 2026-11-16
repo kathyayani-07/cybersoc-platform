@@ -4,10 +4,12 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { formatDateTimeIST } from '../utils/dateTime';
 
+
 const API_URL = (
   import.meta.env.VITE_API_URL ||
   'https://cybersoc-platform-j4h1.onrender.com'
 ).replace(/\/$/, '');
+
 
 export default function IncidentDetailsPage() {
   const { token } = useAuth();
